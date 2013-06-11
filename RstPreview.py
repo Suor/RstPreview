@@ -19,9 +19,11 @@ SETTINGS_FILE = 'RstPreview.sublime-settings'
 def rst_to_html(rst_text):
     try:
         from docutils.core import publish_string
+        css_path = os.path.join(sublime.packages_path(), 'RstPreview/css/')
         args = {
-        'stylesheet_path': os.path.join(sublime.packages_path(), 'RstPreview/css/bootstrap.min.css') +
-         ',' + os.path.join(sublime.packages_path(), 'RstPreview/css/base.css')
+            'stylesheet_path': ','.join(
+                css_path + css for css in ('bootstrap.min.css', 'base.css', 'pygments-default.css')
+            )
         }
         return publish_string(rst_text, writer_name='html', settings_overrides=args)
     except ImportError:
